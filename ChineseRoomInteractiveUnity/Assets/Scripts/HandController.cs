@@ -22,6 +22,14 @@ public class HandController : MonoBehaviour
             // change the sprite to hand_up
         }
 
-        // 
+        //-----on right button click, hand change to eraser--------------
+        if (Input.GetMouseButtonDown(1))
+        {
+            // change the sprite to hand_eraser
+        }
+        else
+        {
+            // change the sprite to hand_up
+        }
     }
 }
