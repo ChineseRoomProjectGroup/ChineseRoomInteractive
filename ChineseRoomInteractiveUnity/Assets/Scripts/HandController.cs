@@ -7,7 +7,7 @@ public class HandController : MonoBehaviour
 {
     public Transform tip_position;
     private HandState state = HandState.Free;
-    private GrabObject held_item;
+    private GrabItem held_item;
 
 
     // PUBLIC MODIFIERS
@@ -59,7 +59,7 @@ public class HandController : MonoBehaviour
 
                 if (overlap_col != null)
                 {                    
-                    GrabObject item = overlap_col.GetComponent<GrabObject>();
+                    GrabItem item = overlap_col.GetComponent<GrabItem>();
                     if (item != null)
                     {
                         GrabItem(item);
@@ -75,7 +75,7 @@ public class HandController : MonoBehaviour
 
     }
 
-    private void GrabItem(GrabObject item)
+    private void GrabItem(GrabItem item)
     {
         item.Grab();
         held_item = item;

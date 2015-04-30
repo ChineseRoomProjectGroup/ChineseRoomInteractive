@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class GrabObject : MonoBehaviour 
+public class GrabItem : MonoBehaviour 
 {
     public List<Transform> snap_transforms;
 
