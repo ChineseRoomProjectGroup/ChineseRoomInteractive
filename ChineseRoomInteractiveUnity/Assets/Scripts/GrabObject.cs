@@ -11,6 +11,8 @@ public class GrabObject : MonoBehaviour
     private bool grabbed = false;
     private bool dropable = false; // a grab object is dropable if there are snap transforms
 
+    private float move_speed = 15f;
+
 
     // PUBLIC MODIFIERS
 
@@ -24,19 +26,6 @@ public class GrabObject : MonoBehaviour
     }
     public void Update()
     {
-        // TESTING
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (IsInPlace()) Grab();
-            else if (grabbed)
-            {
-                Drop();
-            }
-        }
-        //-----------
-
-
-
         if (IsInPlace()) return;
 
 
@@ -50,7 +39,7 @@ public class GrabObject : MonoBehaviour
 
         // update position
         Vector3 target_pos_v3 = new Vector3(target_pos.x, target_pos.y, transform.position.z);
-        transform.position = Vector3.Lerp(transform.position, target_pos_v3, Time.deltaTime * 8f);
+        transform.position = Vector3.Lerp(transform.position, target_pos_v3, Time.deltaTime * move_speed);
 
         if (dropping && Vector3.Distance(transform.position, target_pos_v3) <= 0.1f)
         {
@@ -71,7 +60,8 @@ public class GrabObject : MonoBehaviour
     /// <summary>
     /// Causes the object to position itself at the closest snap location
     /// 
-    /// requires: if dropable, snap_transforms is not empty
+    /// requires: - if dropable, snap_transforms is not empty
+    ///           - snap_transforms contains non null elements
     /// </summary>
     public void Drop()
     {
