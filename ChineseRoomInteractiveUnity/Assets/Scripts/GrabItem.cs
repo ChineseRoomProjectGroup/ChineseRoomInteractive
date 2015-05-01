@@ -14,6 +14,14 @@ public class GrabItem : MonoBehaviour
     // true if the hand holds an item that can interact with this
     // item - should highlight
     private bool held_item_can_interact = false;
+    private List<string> interactable_item_names = new List<string>() { "Pencil", "Eraser" };
+    // item name : tooltip text
+    private string pick_up_tooltip = "Grab paper";
+    private Dictionary<string, string> interactable_item_tooltips = new Dictionary<string, string>()
+    { 
+        {"Pencil", "Write Chinese"},
+        {"Eraser", "Erase"}
+    };
 
     // Objects whose positions are placement locations for grabbed items
     // Can be used as placement indicators (snap objects will be active only when the GrabItem is grabbed)
@@ -84,6 +92,11 @@ public class GrabItem : MonoBehaviour
         if (collider.transform == hand.transform && !grabbed)
         {
             SetGraphicsObject(graphics_hover);
+
+            if (hand.GetHandState() == HandState.Free)
+                hand.SetActionToolTip(pick_up_tooltip);
+            else
+                hand.SetActionToolTip(interactable_item_tooltips[hand.GetHeldItem().name]);
         }
     }
     public void OnTriggerExit2D(Collider2D collider)
@@ -92,6 +105,7 @@ public class GrabItem : MonoBehaviour
         if (collider.transform == hand.transform && !grabbed)
         {
             SetGraphicsObject(held_item_can_interact ? graphics_highlight : graphics_normal);
+            hand.SetActionToolTip("");
         }
     }
 
@@ -182,10 +196,8 @@ public class GrabItem : MonoBehaviour
 
     protected virtual void OnHandStateChange(object sender, System.EventArgs e)
     {
-        if (hand == null) return;
-
         if (hand.GetHandState() == HandState.HoldingItem &&
-            (hand.GetHeldItem().name == "Pencil" || hand.GetHeldItem().name == "Eraser"))
+            (interactable_item_names.Contains(hand.GetHeldItem().name)))
         {
             held_item_can_interact = true;
             SetGraphicsObject(graphics_highlight);

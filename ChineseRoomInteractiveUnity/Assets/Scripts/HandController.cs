@@ -7,6 +7,7 @@ public enum HandState { Free, HoldingItem };
 public class HandController : MonoBehaviour 
 {
     public Transform tip_position;
+    public TextMesh tooltip;
     private HandState state = HandState.Free;
     private GrabItem held_item, held_item_last, hovered_item;
 
@@ -19,6 +20,7 @@ public class HandController : MonoBehaviour
     public void Start()
     {
         Cursor.visible = false; // hide default OS cursor
+        SetActionToolTip("");
     }
 	public void Update()
     {
@@ -47,7 +49,7 @@ public class HandController : MonoBehaviour
 
     public void SetActionToolTip(string text)
     {
-
+        tooltip.text = text;
     }
 
 
