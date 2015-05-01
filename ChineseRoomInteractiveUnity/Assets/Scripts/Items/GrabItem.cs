@@ -13,11 +13,6 @@ public class GrabItem : MonoBehaviour
     public Transform graphics_normal, graphics_hover, graphics_highlight;
     private Transform current_graphics_obj;
 
-    // true if the hand holds an item that can interact with this
-    // item - should highlight
-    private bool held_item_can_interact = false;
-    protected List<string> interactable_item_names = new List<string>() { };
-
     private string GrabbedSortingLayer = "Hand UI";
     private string NormalSortingLayer = "Foreground";
 
@@ -28,6 +23,16 @@ public class GrabItem : MonoBehaviour
 
     // item name (that wants to interact with this item) : tooltip
     protected Dictionary<string, string> interactable_item_tooltips = new Dictionary<string, string>() { };
+
+
+    /// Interaction
+
+    // true if the hand holds an item that can interact with this
+    // item - should highlight
+    private bool held_item_can_interact = false;
+
+    // the tags of items that can interact with this item
+    protected List<string> interactable_item_tags = new List<string>() { };
 
 
     /// General
@@ -138,7 +143,7 @@ public class GrabItem : MonoBehaviour
     /// <param name="target"></param>
     public virtual bool Use(GrabItem target)
     {
-        if (target != null && target.interactable_item_names.Contains(this.name))
+        if (target != null && target.interactable_item_tags.Contains(this.tag))
         {
             return true;
         }
@@ -223,19 +228,27 @@ public class GrabItem : MonoBehaviour
         current_graphics_obj.gameObject.SetActive(true);
     }
 
+
     // EVENTS
 
     private void OnHandStateChange(object sender, System.EventArgs e)
     {
+        // if the hand is now holding an item that can interact with this one
         if (hand.GetHandState() == HandState.HoldingItem &&
-            (interactable_item_names.Contains(hand.GetHeldItem().name)))
+            (interactable_item_tags.Contains(hand.GetHeldItem().tag)))
         {
+            // save that the held item can interact with this
             held_item_can_interact = true;
+
+            // switch to highlighted graphics
             SetGraphicsObject(graphics_highlight);
         }
         else
         {
+            // save that the held item (if there is one) cannot interact with this
             held_item_can_interact = false;
+
+            // switch to normal graphics
             SetGraphicsObject(graphics_normal);
         }
     }

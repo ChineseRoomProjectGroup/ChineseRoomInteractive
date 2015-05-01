@@ -6,7 +6,7 @@ public class Paper : GrabItem
 {
     new public void Start()
     {
-        interactable_item_names = new List<string>() { "Pencil", "Eraser" };
+        interactable_item_tags = new List<string>() { "Pencil", "Eraser" };
 
         // tool tips
         pick_up_tooltip = "Grab paper";

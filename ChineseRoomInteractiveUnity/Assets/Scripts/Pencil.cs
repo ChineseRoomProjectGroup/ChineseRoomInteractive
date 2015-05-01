@@ -6,7 +6,7 @@ public class Pencil : GrabItem
 {
     new public void Start()
     {
-        interactable_item_names = new List<string>() { };
+        interactable_item_tags = new List<string>() { };
 
         // tool tips
         pick_up_tooltip = "Grab pencil";
