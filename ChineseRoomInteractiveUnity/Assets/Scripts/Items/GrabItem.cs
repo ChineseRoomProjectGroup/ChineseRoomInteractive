@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class GrabItem : MonoBehaviour 
 {
+    /// Graphics
+    
     // Graphics objects for different states
     // normal - held or in world
     // hover - hovered by free hand, hovered by hand with item useable on this item
@@ -14,27 +16,33 @@ public class GrabItem : MonoBehaviour
     // true if the hand holds an item that can interact with this
     // item - should highlight
     private bool held_item_can_interact = false;
-    private List<string> interactable_item_names = new List<string>() { "Pencil", "Eraser" };
-    // item name : tooltip text
-    private string pick_up_tooltip = "Grab paper";
-    private Dictionary<string, string> interactable_item_tooltips = new Dictionary<string, string>()
-    { 
-        {"Pencil", "Write Chinese"},
-        {"Eraser", "Erase"}
-    };
+    protected List<string> interactable_item_names = new List<string>() { };
+
+    private string GrabbedSortingLayer = "Hand UI";
+    private string NormalSortingLayer = "Foreground";
+
+
+    /// Tooltips
+    
+    protected string pick_up_tooltip = "Grab item";
+
+    // item name (that wants to interact with this item) : tooltip
+    protected Dictionary<string, string> interactable_item_tooltips = new Dictionary<string, string>() { };
+
+
+    /// General
 
     // Objects whose positions are placement locations for grabbed items
     // Can be used as placement indicators (snap objects will be active only when the GrabItem is grabbed)
     public List<Transform> snap_objects;
 
     private HandController hand; // reference to the hand
-
     private Vector2 target_pos;
     private bool dropping = false;
     private bool grabbed = false;
     private bool dropable = false; // a grab object is dropable if there are snap transforms
-
     private float move_speed = 15f;
+
 
 
     // PUBLIC MODIFIERS
@@ -91,12 +99,26 @@ public class GrabItem : MonoBehaviour
         // on hand hover (not while grabbed)
         if (collider.transform == hand.transform && !grabbed)
         {
-            SetGraphicsObject(graphics_hover);
+            if (hand.GetHandState() == HandState.HoldingItem)
+            {
+                // if the held item can interact with this item
+                if (held_item_can_interact)
+                {
+                    // show the hover graphics
+                    SetGraphicsObject(graphics_hover);
 
-            if (hand.GetHandState() == HandState.Free)
-                hand.SetActionToolTip(pick_up_tooltip);
-            else
-                hand.SetActionToolTip(interactable_item_tooltips[hand.GetHeldItem().name]);
+                    // display the interaction tooltip
+                    hand.SetActionToolTip(interactable_item_tooltips[hand.GetHeldItem().name]);
+                }
+            }
+            else if (hand.GetHandState() == HandState.Free)
+            {
+                // show the hover graphics
+                SetGraphicsObject(graphics_hover);
+
+                // show pickup tooltip
+                hand.SetActionToolTip(pick_up_tooltip);  
+            }    
         }
     }
     public void OnTriggerExit2D(Collider2D collider)
@@ -111,13 +133,16 @@ public class GrabItem : MonoBehaviour
 
     /// <summary>
     /// Do something when this item is used on some other (target) item.
-    /// 
-    /// requires: target must be non-null
+    /// Returns whether some interaction was done.
     /// </summary>
     /// <param name="target"></param>
-    public virtual void Use(GrabItem target)
+    public virtual bool Use(GrabItem target)
     {
-
+        if (target != null && target.interactable_item_names.Contains(this.name))
+        {
+            return true;
+        }
+        else return false;
     }
     /// <summary>
     /// Causes the object to position itself at the mouse position until dropped (Drop())
@@ -131,6 +156,9 @@ public class GrabItem : MonoBehaviour
 
         // set graphics back to normal
         SetGraphicsObject(graphics_normal);
+
+        // draw on top of other items
+        current_graphics_obj.GetComponent<SpriteRenderer>().sortingLayerName = GrabbedSortingLayer;
     }
     /// <summary>
     /// Causes the object to position itself at the closest snap location
@@ -145,6 +173,9 @@ public class GrabItem : MonoBehaviour
 
         grabbed = false;
         dropping = true;
+
+        // stop drawing on top of other items
+        current_graphics_obj.GetComponent<SpriteRenderer>().sortingLayerName = NormalSortingLayer;
 
 
         // find the closest snap position 
@@ -194,7 +225,7 @@ public class GrabItem : MonoBehaviour
 
     // EVENTS
 
-    protected virtual void OnHandStateChange(object sender, System.EventArgs e)
+    private void OnHandStateChange(object sender, System.EventArgs e)
     {
         if (hand.GetHandState() == HandState.HoldingItem &&
             (interactable_item_names.Contains(hand.GetHeldItem().name)))

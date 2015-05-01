@@ -91,7 +91,10 @@ public class HandController : MonoBehaviour
                 // Use held item on hovered item (if there is one)
                 // or drop the item (if there isn't a hovered item)
                 if (hovered_item != null)
-                    held_item.Use(hovered_item);
+                {
+                    // if the item can be used, use it, otherwise, drop it
+                    if (!held_item.Use(hovered_item)) DropHeldItem();
+                }
                 else
                     DropHeldItem();
             }
