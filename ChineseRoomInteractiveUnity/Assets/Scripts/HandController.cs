@@ -103,6 +103,7 @@ public class HandController : MonoBehaviour
         held_item_last = held_item;
         held_item = item;
         state = HandState.HoldingItem;
+        if (event_state_change != null) event_state_change(this, EventArgs.Empty);
 
         // Graphics
 
@@ -113,6 +114,7 @@ public class HandController : MonoBehaviour
         held_item.Drop();
         held_item = null;
         state = HandState.Free;
+        if (event_state_change != null) event_state_change(this, EventArgs.Empty);
 
         // Graphics
 

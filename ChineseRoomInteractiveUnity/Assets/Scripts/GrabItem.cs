@@ -8,8 +8,13 @@ public class GrabItem : MonoBehaviour
     // normal - held or in world
     // hover - hovered by free hand, hovered by hand with item useable on this item
     // highlight - hand holds an item useable on this item
-    public Transform graphics_normal, graphics_hover;
+    public Transform graphics_normal, graphics_hover, graphics_highlight;
     private Transform current_graphics_obj;
+
+    // true if the hand holds an item that can interact with this
+    // item - should highlight
+    private bool held_item_can_interact = false;
+
     // Objects whose positions are placement locations for grabbed items
     // Can be used as placement indicators (snap objects will be active only when the GrabItem is grabbed)
     public List<Transform> snap_objects;
@@ -26,6 +31,12 @@ public class GrabItem : MonoBehaviour
 
     // PUBLIC MODIFIERS
 
+    public void Awake()
+    {
+        // get HandController reference
+        hand = FindObjectOfType<HandController>();
+        if (hand == null) Debug.LogError("HandController object not found");
+    }
     public void Start()
     {
         // start with normal graphics
@@ -40,17 +51,12 @@ public class GrabItem : MonoBehaviour
             dropable = true;
         }
 
-        // get HandController reference
-        hand = FindObjectOfType<HandController>();
-        if (hand == null) Debug.LogError("HandController object not found");
-
         // hook up to hand events
         hand.event_state_change += new System.EventHandler(OnHandStateChange);
     }
     public void Update()
     {
         if (IsInPlace()) return;
-
 
         // set target position to mouse when grabbed
         if (grabbed)
@@ -85,7 +91,7 @@ public class GrabItem : MonoBehaviour
         // on hand unhover (not while grabbed)
         if (collider.transform == hand.transform && !grabbed)
         {
-            SetGraphicsObject(graphics_normal);
+            SetGraphicsObject(held_item_can_interact ? graphics_highlight : graphics_normal);
         }
     }
 
@@ -108,6 +114,9 @@ public class GrabItem : MonoBehaviour
 
         // show snap objects
         ShowSnapObjects(true);
+
+        // set graphics back to normal
+        SetGraphicsObject(graphics_normal);
     }
     /// <summary>
     /// Causes the object to position itself at the closest snap location
@@ -162,7 +171,7 @@ public class GrabItem : MonoBehaviour
     }
     private void SetGraphicsObject(Transform new_graphics_obj)
     {
-        if (current_graphics_obj == null) return;
+        if (current_graphics_obj == null || new_graphics_obj == null) return;
 
         current_graphics_obj.gameObject.SetActive(false);
         current_graphics_obj = new_graphics_obj;
@@ -173,6 +182,19 @@ public class GrabItem : MonoBehaviour
 
     protected virtual void OnHandStateChange(object sender, System.EventArgs e)
     {
+        if (hand == null) return;
+
+        if (hand.GetHandState() == HandState.HoldingItem &&
+            (hand.GetHeldItem().name == "Pencil" || hand.GetHeldItem().name == "Eraser"))
+        {
+            held_item_can_interact = true;
+            SetGraphicsObject(graphics_highlight);
+        }
+        else
+        {
+            held_item_can_interact = false;
+            SetGraphicsObject(graphics_normal);
+        }
     }
 
 
