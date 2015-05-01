@@ -4,9 +4,17 @@ using System.Collections.Generic;
 
 public class GrabItem : MonoBehaviour 
 {
+    // Graphics objects for different states
+    // normal - held or in world
+    // hover - hovered by free hand, hovered by hand with item useable on this item
+    // highlight - hand holds an item useable on this item
+    public Transform graphics_normal, graphics_hover;
+    private Transform current_graphics_obj;
     // Objects whose positions are placement locations for grabbed items
     // Can be used as placement indicators (snap objects will be active only when the GrabItem is grabbed)
-    public List<Transform> snap_objects; 
+    public List<Transform> snap_objects;
+
+    private HandController hand; // reference to the hand
 
     private Vector2 target_pos;
     private bool dropping = false;
@@ -20,6 +28,9 @@ public class GrabItem : MonoBehaviour
 
     public void Start()
     {
+        // start with normal graphics
+        current_graphics_obj = graphics_normal;
+
         // hide snap objects
         ShowSnapObjects(false);
 
@@ -28,6 +39,13 @@ public class GrabItem : MonoBehaviour
         {
             dropable = true;
         }
+
+        // get HandController reference
+        hand = FindObjectOfType<HandController>();
+        if (hand == null) Debug.LogError("HandController object not found");
+
+        // hook up to hand events
+        hand.event_state_change += new System.EventHandler(OnHandStateChange);
     }
     public void Update()
     {
@@ -54,11 +72,37 @@ public class GrabItem : MonoBehaviour
         }
 
     }
+    public void OnTriggerEnter2D(Collider2D collider)
+    {
+        // on hand hover (not while grabbed)
+        if (collider.transform == hand.transform && !grabbed)
+        {
+            SetGraphicsObject(graphics_hover);
+        }
+    }
+    public void OnTriggerExit2D(Collider2D collider)
+    {
+        // on hand unhover (not while grabbed)
+        if (collider.transform == hand.transform && !grabbed)
+        {
+            SetGraphicsObject(graphics_normal);
+        }
+    }
 
+    /// <summary>
+    /// Do something when this item is used on some other (target) item.
+    /// 
+    /// requires: target must be non-null
+    /// </summary>
+    /// <param name="target"></param>
+    public virtual void Use(GrabItem target)
+    {
+
+    }
     /// <summary>
     /// Causes the object to position itself at the mouse position until dropped (Drop())
     /// </summary>
-    public void Grab()
+    public virtual void Grab()
     {
         grabbed = true;
 
@@ -67,13 +111,14 @@ public class GrabItem : MonoBehaviour
     }
     /// <summary>
     /// Causes the object to position itself at the closest snap location
+    /// Returns whether the item was actually dropped (could be not dropable)
     /// 
     /// requires: - if dropable, snap_objects is not empty
     ///           - snap_objects contains non null elements
     /// </summary>
-    public void Drop()
+    public virtual bool Drop()
     {
-        if (!dropable) return;
+        if (!dropable) return false;
 
         grabbed = false;
         dropping = true;
@@ -97,6 +142,8 @@ public class GrabItem : MonoBehaviour
 
         // hide snap objects
         ShowSnapObjects(false);
+
+        return true;
     }
 
 
@@ -112,6 +159,20 @@ public class GrabItem : MonoBehaviour
         {
             snap_object.gameObject.SetActive(show);
         }
+    }
+    private void SetGraphicsObject(Transform new_graphics_obj)
+    {
+        if (current_graphics_obj == null) return;
+
+        current_graphics_obj.gameObject.SetActive(false);
+        current_graphics_obj = new_graphics_obj;
+        current_graphics_obj.gameObject.SetActive(true);
+    }
+
+    // EVENTS
+
+    protected virtual void OnHandStateChange(object sender, System.EventArgs e)
+    {
     }
 
 
