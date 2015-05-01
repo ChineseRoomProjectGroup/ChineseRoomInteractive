@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System;
 
@@ -7,7 +8,7 @@ public enum HandState { Free, HoldingItem };
 public class HandController : MonoBehaviour 
 {
     public Transform tip_position;
-    public TextMesh tooltip;
+    public Text tooltip;
     private HandState state = HandState.Free;
     private GrabItem held_item, held_item_last, hovered_item;
 
