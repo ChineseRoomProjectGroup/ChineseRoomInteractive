@@ -7,8 +7,12 @@ using System.Linq;
 
 public class Book : GrabItem 
 {
-    public int[] shelf_location_indices;
+    // hand hover colliders
+    public Collider2D collider_shelf, collider_open;
+
+    // open locations - snap locations where the book should be open (as opposed to on the shelf)
     public int[] open_location_indices;
+    //public int[] shelf_location_indices;
 
     // Base graphics objects used for:
     //  graphics_normal : shelf
@@ -37,7 +41,7 @@ public class Book : GrabItem
     
     public override void Grab()
     {
-        open = false;
+        SetOpen(false);
 
         base.Grab();
     }
@@ -46,7 +50,7 @@ public class Book : GrabItem
     {
         base.OnSnapLocationChosen(snap_object_index);
 
-        open = open_location_indices.Contains(snap_object_index);
+        SetOpen(open_location_indices.Contains(snap_object_index));
     }
     protected override void ChangeGraphicsByState()
     {
@@ -69,4 +73,13 @@ public class Book : GrabItem
         if (open) text_canvas_obj.transform.SetParent(new_graphics_obj, false);
         return true;
     }
+
+
+    private void SetOpen(bool open)
+    {
+        this.open = open;
+        collider_shelf.enabled = !open;
+        collider_open.enabled = open;
+    }
+
 }
