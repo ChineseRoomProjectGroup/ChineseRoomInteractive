@@ -12,6 +12,9 @@ public class HandController : MonoBehaviour
     private HandState state = HandState.Free;
     private GrabItem held_item, held_item_last, hovered_item;
 
+    // whether dropping / using the held item is allowed
+    private bool allow_item_use = true;
+
     // Events
     public event EventHandler event_state_change;
 
@@ -52,6 +55,10 @@ public class HandController : MonoBehaviour
     {
         tooltip.text = text;
     }
+    public void AllowItemUse(bool allow)
+    {
+        allow_item_use = allow;
+    }
 
 
     // PRIVATE MODIFIERS
@@ -71,23 +78,9 @@ public class HandController : MonoBehaviour
                 {
                     GrabItem(hovered_item);
                     hovered_item = null;
-                }
-
-                /*
-                Vector2 mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                Collider2D overlap_col = Physics2D.OverlapPoint(mouse_pos);
-
-                if (overlap_col != null)
-                {                    
-                    GrabItem item = overlap_col.GetComponent<GrabItem>();
-                    if (item != null)
-                    {
-                        GrabItem(item);
-                    }
-                }
-                 * */               
+                }              
             }
-            else if (state == HandState.HoldingItem)
+            else if (state == HandState.HoldingItem && allow_item_use)
             {
                 // Use held item on hovered item (if there is one)
                 // or drop the item (if there isn't a hovered item)
@@ -110,6 +103,9 @@ public class HandController : MonoBehaviour
         held_item = item;
         state = HandState.HoldingItem;
         if (event_state_change != null) event_state_change(this, EventArgs.Empty);
+
+        SetActionToolTip(""); // NEED ORGANIZATION IMPROVEMENT
+
 
         // Graphics
 
@@ -153,5 +149,9 @@ public class HandController : MonoBehaviour
     public bool JustDropped(GrabItem item)
     {
         return GetLastHeldItem() == item && GetHeldItem() != item;
+    }
+    public bool ItemUseAllowed()
+    {
+        return allow_item_use;
     }
 }

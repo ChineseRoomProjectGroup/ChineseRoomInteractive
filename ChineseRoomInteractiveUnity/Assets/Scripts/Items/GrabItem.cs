@@ -11,7 +11,7 @@ public class GrabItem : MonoBehaviour
     // hover - hovered by free hand, hovered by hand with item useable on this item
     // highlight - hand holds an item useable on this item
     public Transform graphics_normal, graphics_hover, graphics_highlight;
-    private Transform current_graphics_obj;
+    protected Transform current_graphics_obj;
 
     private string GrabbedSortingLayer = "Hand UI";
     private string NormalSortingLayer = "Foreground";
@@ -41,7 +41,7 @@ public class GrabItem : MonoBehaviour
     // Can be used as placement indicators (snap objects will be active only when the GrabItem is grabbed)
     public List<Transform> snap_objects;
 
-    private HandController hand; // reference to the hand
+    protected HandController hand; // reference to the hand
     private Vector2 target_pos;
     private bool dropping = false;
     private bool grabbed = false;
@@ -107,7 +107,7 @@ public class GrabItem : MonoBehaviour
             if (hand.GetHandState() == HandState.HoldingItem)
             {
                 // if the held item can interact with this item
-                if (held_item_can_interact)
+                if (held_item_can_interact && hand.ItemUseAllowed())  // NEED ORGANIZATION IMPROVEMENT - should be part of held_item_can_interact, hand state...
                 {
                     // show the hover graphics
                     SetGraphicsObject(graphics_hover);
@@ -219,13 +219,20 @@ public class GrabItem : MonoBehaviour
             snap_object.gameObject.SetActive(show);
         }
     }
-    private void SetGraphicsObject(Transform new_graphics_obj)
+    /// <summary>
+    /// Returns whether graphics object was set (won't be if objects are null)
+    /// </summary>
+    /// <param name="new_graphics_obj"></param>
+    /// <returns></returns>
+    protected virtual bool SetGraphicsObject(Transform new_graphics_obj)
     {
-        if (current_graphics_obj == null || new_graphics_obj == null) return;
+        if (current_graphics_obj == null || new_graphics_obj == null) return false;
 
         current_graphics_obj.gameObject.SetActive(false);
         current_graphics_obj = new_graphics_obj;
         current_graphics_obj.gameObject.SetActive(true);
+
+        return true;
     }
 
 

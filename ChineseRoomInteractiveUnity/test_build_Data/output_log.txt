@@ -1,0 +1,21 @@
+Initialize engine version: 5.0.1f1 (5a2e8fe35a68)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA NVS 5200M (ID=0x1140)
+    Vendor:   NVIDIA
+    VRAM:     971 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+- Completed reload, in  0.091 seconds
+desktop: 1920x1080 59Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+Platform assembly: C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\System.dll (this message is harmless)

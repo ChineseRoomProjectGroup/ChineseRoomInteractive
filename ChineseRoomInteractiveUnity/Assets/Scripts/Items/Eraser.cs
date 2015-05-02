@@ -14,4 +14,21 @@ public class Eraser : GrabItem
 
         base.Start();
     }
+
+    public override bool Use(GrabItem target)
+    {
+        if (!base.Use(target)) return false;
+
+
+        Paper paper = target.GetComponent<Paper>();
+        if (paper != null)
+        {
+            paper.RemoveLastChar();
+            return true;
+        }
+
+
+        // no interaction happened
+        return false;
+    }
 }
