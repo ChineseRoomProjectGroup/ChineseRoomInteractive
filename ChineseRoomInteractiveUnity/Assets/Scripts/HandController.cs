@@ -113,7 +113,7 @@ public class HandController : MonoBehaviour
     }
     private void DropHeldItem()
     {
-        held_item.Drop();
+        if (!held_item.Drop()) return;
         held_item = null;
         state = HandState.Free;
         if (event_state_change != null) event_state_change(this, EventArgs.Empty);
