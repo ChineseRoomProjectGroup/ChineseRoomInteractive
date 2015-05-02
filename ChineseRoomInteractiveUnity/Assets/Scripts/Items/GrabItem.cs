@@ -30,7 +30,8 @@ public class GrabItem : MonoBehaviour
 
     // Objects whose positions are placement locations for grabbed items
     // Can be used as placement indicators (snap objects will be active only when the GrabItem is grabbed)
-    public List<Transform> snap_objects;
+    public List<SnapLocation> snap_locations;
+    public SnapLocation current_snap_loc; // can be left null if no snap location will be used initially
 
     protected HandController hand; // reference to the hand
     private Vector2 target_pos;
@@ -64,10 +65,17 @@ public class GrabItem : MonoBehaviour
 
 
         // hide snap objects
-        ShowSnapObjects(false);
+        ShowSnapLocations(false);
+
+        // snap to the initial location if one is set
+        if (current_snap_loc != null)
+        {
+            target_pos = current_snap_loc.transform.position;
+            current_snap_loc.SetOccupied(true);
+        }
 
         // find/set whether dropable
-        if (snap_objects.Count > 0)
+        if (snap_locations.Count > 0)
         {
             dropable = true;
         }
@@ -156,8 +164,14 @@ public class GrabItem : MonoBehaviour
         grabbed = true;
         hovered = false;
 
+        // unoccupy current snap location (if at one)
+        if (current_snap_loc != null)
+        {
+            current_snap_loc.SetOccupied(false);
+        }
+
         // show snap objects
-        ShowSnapObjects(true);
+        ShowSnapLocations(true);
 
         // update graphics
         ChangeGraphicsByState();
@@ -169,42 +183,50 @@ public class GrabItem : MonoBehaviour
     /// Causes the object to position itself at the closest snap location
     /// Returns whether the item was actually dropped (could be not dropable)
     /// 
-    /// requires: - if dropable, snap_objects is not empty
-    ///           - snap_objects contains non null elements
+    /// requires: - if dropable, snap_locations is not empty
+    ///           - snap_locations contains non null elements
     /// </summary>
     public virtual bool Drop()
     {
         if (!dropable) return false;
 
-        grabbed = false;
-        dropping = true;
-
-        // stop drawing on top of other items
-        current_graphics_obj.GetComponent<SpriteRenderer>().sortingLayerName = NormalSortingLayer;
-
-
-        // find the closest snap position 
+        // find the closest snap location 
         float min_dist = float.MaxValue;
-        int closest_snap_object_i = 0;
+        SnapLocation closest_snap_loc = current_snap_loc;
 
-        for (int i = 0; i < snap_objects.Count; ++i)
+        foreach (SnapLocation loc in snap_locations)
         {
-            float dist = Vector2.Distance(transform.position, snap_objects[i].position);
+            if (loc.IsOccupied()) continue; // not an option
+
+            float dist = Vector2.Distance(transform.position, loc.transform.position);
             if (dist < min_dist)
             {
                 min_dist = dist;
-                closest_snap_object_i = i;
+                closest_snap_loc = loc;
             }
         }
-        target_pos = snap_objects[closest_snap_object_i].position;
-        OnSnapLocationChosen(closest_snap_object_i);
 
+        // return if no available snap locations
+        if (closest_snap_loc == null || closest_snap_loc.IsOccupied()) return false;
+
+        // snap to the chosen snap location
+        target_pos = closest_snap_loc.transform.position;
+        current_snap_loc = closest_snap_loc;
+        current_snap_loc.SetOccupied(true);
+        OnSnapLocationChosen(closest_snap_loc);
 
         // hide snap objects
-        ShowSnapObjects(false);
+        ShowSnapLocations(false);
+
+        // update state
+        grabbed = false;
+        dropping = true;
 
         // update graphics
         ChangeGraphicsByState();
+
+        // stop drawing on top of other items
+        current_graphics_obj.GetComponent<SpriteRenderer>().sortingLayerName = NormalSortingLayer;
 
         return true;
     }
@@ -216,11 +238,11 @@ public class GrabItem : MonoBehaviour
     /// Show or hide snap objects (snap objects can be used as item placement indicators).
     /// </summary>
     /// <param name="show"></param>
-    private void ShowSnapObjects(bool show)
+    private void ShowSnapLocations(bool show)
     {
-        foreach (Transform snap_object in snap_objects)
+        foreach (SnapLocation snap_loc in snap_locations)
         {
-            snap_object.gameObject.SetActive(show);
+            snap_loc.SetActive(show);
         }
     }
     protected virtual void ChangeGraphicsByState()
@@ -246,7 +268,7 @@ public class GrabItem : MonoBehaviour
         return true;
     }
 
-    protected virtual void OnSnapLocationChosen(int snap_object_index) { }
+    protected virtual void OnSnapLocationChosen(SnapLocation loc) { }
 
 
 

@@ -7,16 +7,10 @@ using System.Linq;
 
 public class Book : GrabItem 
 {
+    private string tag_openbook_snap_loc = "Open Book";
+
     // hand hover colliders
     public Collider2D collider_shelf, collider_open;
-
-    // open locations - snap locations where the book should be open (as opposed to on the shelf)
-    public int[] open_location_indices;
-    //public int[] shelf_location_indices;
-
-    // Base graphics objects used for:
-    //  graphics_normal : shelf
-    //  graphics_hover  : shelf_hover 
 
     public Transform graphics_open, graphics_open_hover, graphics_closed;
     public Canvas text_canvas_obj;
@@ -46,11 +40,11 @@ public class Book : GrabItem
         base.Grab();
     }
 
-    protected override void OnSnapLocationChosen(int snap_object_index)
+    protected override void OnSnapLocationChosen(SnapLocation loc)
     {
-        base.OnSnapLocationChosen(snap_object_index);
+        base.OnSnapLocationChosen(loc);
 
-        SetOpen(open_location_indices.Contains(snap_object_index));
+        SetOpen(loc.CompareTag(tag_openbook_snap_loc));
     }
     protected override void ChangeGraphicsByState()
     {
