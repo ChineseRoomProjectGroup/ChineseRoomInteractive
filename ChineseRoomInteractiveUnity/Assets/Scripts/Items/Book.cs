@@ -7,10 +7,14 @@ using System.Linq;
 
 public class Book : GrabItem 
 {
-    private string tag_openbook_snap_loc = "Open Book";
+    private string tag_openbook_snap_loc = "Open Book Spot";
 
     // hand hover colliders
     public Collider2D collider_shelf, collider_open;
+
+    // base graphics objects for:
+    // graphics_normal : shelf
+    // graphics_hover : shelf hovered
 
     public Transform graphics_open, graphics_open_hover, graphics_closed;
     public Canvas text_canvas_obj;
