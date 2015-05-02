@@ -3,20 +3,16 @@ using UnityEngine.UI;
 using System.Collections;
 using System;
 
-public enum HandState { Free, HoldingItem };
 
 public class HandController : MonoBehaviour 
 {
     public Transform tip_position;
     public Text tooltip;
-    private HandState state = HandState.Free;
+    private bool holding_item = false;
     private GrabItem held_item, held_item_last, hovered_item;
 
     // whether dropping / using the held item is allowed
     private bool allow_item_use = true;
-
-    // Events
-    public event EventHandler event_state_change;
 
 
     // PUBLIC MODIFIERS
@@ -71,7 +67,7 @@ public class HandController : MonoBehaviour
         // Pick up item, drop item, do something with item
         if (input_action)
         {
-            if (state == HandState.Free)
+            if (!holding_item)
             {
                 // Pick up an item (if over one)
                 if (hovered_item != null)
@@ -80,7 +76,7 @@ public class HandController : MonoBehaviour
                     hovered_item = null;
                 }              
             }
-            else if (state == HandState.HoldingItem && allow_item_use)
+            else if (holding_item && allow_item_use)
             {
                 // Use held item on hovered item (if there is one)
                 // or drop the item (if there isn't a hovered item)
@@ -101,8 +97,7 @@ public class HandController : MonoBehaviour
         item.Grab();
         held_item_last = held_item;
         held_item = item;
-        state = HandState.HoldingItem;
-        if (event_state_change != null) event_state_change(this, EventArgs.Empty);
+        holding_item = true;
 
         SetActionToolTip(""); // NEED ORGANIZATION IMPROVEMENT
 
@@ -115,8 +110,7 @@ public class HandController : MonoBehaviour
     {
         if (!held_item.Drop()) return;
         held_item = null;
-        state = HandState.Free;
-        if (event_state_change != null) event_state_change(this, EventArgs.Empty);
+        holding_item = false;
 
         // Graphics
 
@@ -138,10 +132,6 @@ public class HandController : MonoBehaviour
     {
         return hovered_item;
     }
-    public HandState GetHandState()
-    {
-        return state;
-    }
     public bool JustGrabbed(GrabItem item)
     {
         return GetHeldItem() == item && GetLastHeldItem() != item;
@@ -153,5 +143,9 @@ public class HandController : MonoBehaviour
     public bool ItemUseAllowed()
     {
         return allow_item_use;
+    }
+    public bool HoldingItem()
+    {
+        return holding_item;
     }
 }

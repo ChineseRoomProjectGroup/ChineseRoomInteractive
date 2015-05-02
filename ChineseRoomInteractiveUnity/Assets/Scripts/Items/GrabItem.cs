@@ -9,30 +9,21 @@ public class GrabItem : MonoBehaviour
     // Graphics objects for different states
     // normal - held or in world
     // hover - hovered by free hand, hovered by hand with item useable on this item
-    // highlight - hand holds an item useable on this item
-    public Transform graphics_normal, graphics_hover, graphics_highlight;
+    public Transform graphics_normal, graphics_hover;
     protected Transform current_graphics_obj;
 
     private string GrabbedSortingLayer = "Hand UI";
     private string NormalSortingLayer = "Foreground";
 
 
-    /// Tooltips
-    
-    protected string pick_up_tooltip = "Grab item";
-
-    // item name (that wants to interact with this item) : tooltip
-    protected Dictionary<string, string> interactable_item_tooltips = new Dictionary<string, string>() { };
-
-
-    /// Interaction
-
-    // true if the hand holds an item that can interact with this
-    // item - should highlight
-    private bool held_item_can_interact = false;
+    /// Interaction and Tooltips
 
     // the tags of items that can interact with this item
     protected List<string> interactable_item_tags = new List<string>() { };
+
+    // item name (that wants to interact with this item) : tooltip
+    protected Dictionary<string, string> interactable_item_tooltips = new Dictionary<string, string>() { };
+    protected string pick_up_tooltip = "Grab item";
 
 
     /// General
@@ -43,10 +34,16 @@ public class GrabItem : MonoBehaviour
 
     protected HandController hand; // reference to the hand
     private Vector2 target_pos;
-    private bool dropping = false;
-    private bool grabbed = false;
+
     private bool dropable = false; // a grab object is dropable if there are snap transforms
     private float move_speed = 15f;
+
+    // state
+    private bool grabbed = false;
+    private bool dropping = false;
+    private bool hovered = false;
+    
+    
 
 
 
@@ -60,8 +57,11 @@ public class GrabItem : MonoBehaviour
     }
     public void Start()
     {
-        // start with normal graphics
-        current_graphics_obj = graphics_normal;
+        // update graphics
+        ChangeGraphicsByState();
+        if (current_graphics_obj == null)
+            Debug.Log("First used graphics object is not assigned");
+
 
         // hide snap objects
         ShowSnapObjects(false);
@@ -71,9 +71,6 @@ public class GrabItem : MonoBehaviour
         {
             dropable = true;
         }
-
-        // hook up to hand events
-        hand.event_state_change += new System.EventHandler(OnHandStateChange);
     }
     public void Update()
     {
@@ -104,26 +101,25 @@ public class GrabItem : MonoBehaviour
         // on hand hover (not while grabbed)
         if (collider.transform == hand.transform && !grabbed)
         {
-            if (hand.GetHandState() == HandState.HoldingItem)
+            hovered = true;
+
+            if (hand.HoldingItem())
             {
                 // if the held item can interact with this item
-                if (held_item_can_interact && hand.ItemUseAllowed())  // NEED ORGANIZATION IMPROVEMENT - should be part of held_item_can_interact, hand state...
+                if (interactable_item_tags.Contains(hand.GetHeldItem().tag) && hand.ItemUseAllowed())
                 {
-                    // show the hover graphics
-                    SetGraphicsObject(graphics_hover);
-
                     // display the interaction tooltip
                     hand.SetActionToolTip(interactable_item_tooltips[hand.GetHeldItem().name]);
                 }
             }
-            else if (hand.GetHandState() == HandState.Free)
+            else
             {
-                // show the hover graphics
-                SetGraphicsObject(graphics_hover);
-
                 // show pickup tooltip
                 hand.SetActionToolTip(pick_up_tooltip);  
-            }    
+            }
+
+            // update graphics
+            ChangeGraphicsByState();
         }
     }
     public void OnTriggerExit2D(Collider2D collider)
@@ -131,7 +127,10 @@ public class GrabItem : MonoBehaviour
         // on hand unhover (not while grabbed)
         if (collider.transform == hand.transform && !grabbed)
         {
-            SetGraphicsObject(held_item_can_interact ? graphics_highlight : graphics_normal);
+            hovered = false;
+
+            // update graphics and tooltip
+            ChangeGraphicsByState();
             hand.SetActionToolTip("");
         }
     }
@@ -155,12 +154,13 @@ public class GrabItem : MonoBehaviour
     public virtual void Grab()
     {
         grabbed = true;
+        hovered = false;
 
         // show snap objects
         ShowSnapObjects(true);
 
-        // set graphics back to normal
-        SetGraphicsObject(graphics_normal);
+        // update graphics
+        ChangeGraphicsByState();
 
         // draw on top of other items
         current_graphics_obj.GetComponent<SpriteRenderer>().sortingLayerName = GrabbedSortingLayer;
@@ -185,22 +185,26 @@ public class GrabItem : MonoBehaviour
 
         // find the closest snap position 
         float min_dist = float.MaxValue;
-        Transform closest_obj = snap_objects[0];
+        int closest_snap_object_i = 0;
 
-        foreach (Transform snap_obj in snap_objects)
+        for (int i = 0; i < snap_objects.Count; ++i)
         {
-            float dist = Vector2.Distance(transform.position, snap_obj.position);
+            float dist = Vector2.Distance(transform.position, snap_objects[i].position);
             if (dist < min_dist)
             {
                 min_dist = dist;
-                closest_obj = snap_obj;
+                closest_snap_object_i = i;
             }
         }
-        target_pos = closest_obj.position;
+        target_pos = snap_objects[closest_snap_object_i].position;
+        OnSnapLocationChosen(closest_snap_object_i);
 
 
         // hide snap objects
         ShowSnapObjects(false);
+
+        // update graphics
+        ChangeGraphicsByState();
 
         return true;
     }
@@ -219,6 +223,11 @@ public class GrabItem : MonoBehaviour
             snap_object.gameObject.SetActive(show);
         }
     }
+    protected virtual void ChangeGraphicsByState()
+    {
+        if (hovered) SetGraphicsObject(graphics_hover);
+        else SetGraphicsObject(graphics_normal);
+    }
     /// <summary>
     /// Returns whether graphics object was set (won't be if objects are null)
     /// </summary>
@@ -226,39 +235,19 @@ public class GrabItem : MonoBehaviour
     /// <returns></returns>
     protected virtual bool SetGraphicsObject(Transform new_graphics_obj)
     {
-        if (current_graphics_obj == null || new_graphics_obj == null) return false;
+        if (new_graphics_obj == null) return false;
 
-        current_graphics_obj.gameObject.SetActive(false);
+        if (current_graphics_obj != null)
+            current_graphics_obj.gameObject.SetActive(false);
+
         current_graphics_obj = new_graphics_obj;
         current_graphics_obj.gameObject.SetActive(true);
 
         return true;
     }
 
+    protected virtual void OnSnapLocationChosen(int snap_object_index) { }
 
-    // EVENTS
-
-    private void OnHandStateChange(object sender, System.EventArgs e)
-    {
-        // if the hand is now holding an item that can interact with this one
-        if (hand.GetHandState() == HandState.HoldingItem &&
-            (interactable_item_tags.Contains(hand.GetHeldItem().tag)))
-        {
-            // save that the held item can interact with this
-            held_item_can_interact = true;
-
-            // switch to highlighted graphics
-            SetGraphicsObject(graphics_highlight);
-        }
-        else
-        {
-            // save that the held item (if there is one) cannot interact with this
-            held_item_can_interact = false;
-
-            // switch to normal graphics
-            SetGraphicsObject(graphics_normal);
-        }
-    }
 
 
     // PUBLIC ACCESSORS
@@ -266,4 +255,7 @@ public class GrabItem : MonoBehaviour
     public bool IsDropable() { return dropable; }
     public bool IsGrabbed() { return grabbed; }
     public bool IsInPlace() { return !grabbed && !dropping; }
+    public bool IsDropping() { return dropping; }
+    public bool IsHovered() { return hovered; }
+
 }
