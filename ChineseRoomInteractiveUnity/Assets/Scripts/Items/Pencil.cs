@@ -43,7 +43,7 @@ public class Pencil : GrabItem
         return false;
     }
 
-    public void Update()
+    new public void Update()
     {
         // freeze the pencil until text input is finished (palette is inactive)
         if (in_use)
