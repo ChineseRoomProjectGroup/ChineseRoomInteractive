@@ -12,7 +12,7 @@ Platform assembly: C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Int
 Loading C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
 Platform assembly: C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\UnityEngine.UI.dll (this message is harmless)
 Loading C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-- Completed reload, in  0.065 seconds
+- Completed reload, in  0.069 seconds
 desktop: 1920x1080 59Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.

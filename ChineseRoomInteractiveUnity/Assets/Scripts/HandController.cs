@@ -9,7 +9,8 @@ public class HandController : MonoBehaviour
     public Transform tip_position;
     public Text tooltip;
     private bool holding_item = false;
-    private GrabItem held_item, held_item_last, hovered_item;
+    private GrabItem held_item, held_item_last;
+    private Item hovered_item; // need not be a grabbable item
 
     // whether dropping / using the held item is allowed
     private bool allow_item_use = true;
@@ -35,14 +36,14 @@ public class HandController : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D collider)
     {
         // save hovered item
-        GrabItem item = collider.GetComponent<GrabItem>();
+        Item item = collider.GetComponent<Item>();
         if (item != null && item != held_item)
             hovered_item = item;
     }
     public void OnTriggerExit2D(Collider2D collider)
     {
         // remove hovered item reference
-        GrabItem item = collider.GetComponent<GrabItem>();
+        Item item = collider.GetComponent<Item>();
         if (item == hovered_item && item != held_item)
             hovered_item = null;
     }
@@ -72,8 +73,12 @@ public class HandController : MonoBehaviour
                 // Pick up an item (if over one)
                 if (hovered_item != null)
                 {
-                    GrabItem(hovered_item);
-                    hovered_item = null;
+                    GrabItem gi = hovered_item.GetComponent<GrabItem>();
+                    if (gi != null)
+                    {
+                        GrabItem(gi);
+                        hovered_item = null;
+                    }
                 }              
             }
             else if (holding_item && allow_item_use)
@@ -128,7 +133,7 @@ public class HandController : MonoBehaviour
     {
         return held_item_last;
     }
-    public GrabItem GetHoveredItem()
+    public Item GetHoveredItem()
     {
         return hovered_item;
     }

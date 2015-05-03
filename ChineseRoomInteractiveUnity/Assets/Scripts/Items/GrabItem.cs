@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class GrabItem : MonoBehaviour 
+public class GrabItem : Item 
 {
     /// Graphics
     
@@ -18,44 +18,30 @@ public class GrabItem : MonoBehaviour
 
     /// Interaction and Tooltips
 
-    // the tags of items that can interact with this item
-    protected List<string> interactable_item_tags = new List<string>() { };
-
-    // item name (that wants to interact with this item) : tooltip
-    protected Dictionary<string, string> interactable_item_tooltips = new Dictionary<string, string>() { };
     protected string pick_up_tooltip = "Grab item";
 
 
     /// General
 
     // Objects whose positions are placement locations for grabbed items
-    // Can be used as placement indicators (snap objects will be active only when the GrabItem is grabbed)
+    // Can be used as placement indicators (snap objects will be active only
+    // when the GrabItem is grabbed)
     public List<SnapLocation> snap_locations;
-    public SnapLocation current_snap_loc; // can be left null if no snap location will be used initially
 
-    protected HandController hand; // reference to the hand
+    // can be left null if no snap location will be used initially
+    public SnapLocation current_snap_loc; 
     private Vector2 target_pos;
-
     private bool dropable = false; // a grab object is dropable if there are snap transforms
     private float move_speed = 15f;
 
     // state
     private bool grabbed = false;
-    private bool dropping = false;
-    private bool hovered = false;
-    
-    
+    private bool dropping = false;    
 
 
 
     // PUBLIC MODIFIERS
 
-    public void Awake()
-    {
-        // get HandController reference
-        hand = FindObjectOfType<HandController>();
-        if (hand == null) Debug.LogError("HandController object not found");
-    }
     public void Start()
     {
         // update graphics
@@ -104,9 +90,9 @@ public class GrabItem : MonoBehaviour
         }
 
     }
-    public void OnTriggerEnter2D(Collider2D collider)
+    new public void OnTriggerEnter2D(Collider2D collider)
     {
-        // on hand hover (not while grabbed)
+        // on hand hover (cannot be hovered while grabbed)
         if (collider.transform == hand.transform && !grabbed)
         {
             hovered = true;
@@ -114,7 +100,7 @@ public class GrabItem : MonoBehaviour
             if (hand.HoldingItem())
             {
                 // if the held item can interact with this item
-                if (interactable_item_tags.Contains(hand.GetHeldItem().tag) && hand.ItemUseAllowed())
+                if (CanBeUsedOnBy(hand.GetHeldItem().tag) && hand.ItemUseAllowed())
                 {
                     // display the interaction tooltip
                     hand.SetActionToolTip(interactable_item_tooltips[hand.GetHeldItem().name]);
@@ -130,9 +116,9 @@ public class GrabItem : MonoBehaviour
             ChangeGraphicsByState();
         }
     }
-    public void OnTriggerExit2D(Collider2D collider)
+    new public void OnTriggerExit2D(Collider2D collider)
     {
-        // on hand unhover (not while grabbed)
+        // on hand unhover (cannot be hovered while grabbed)
         if (collider.transform == hand.transform && !grabbed)
         {
             hovered = false;
@@ -148,9 +134,9 @@ public class GrabItem : MonoBehaviour
     /// Returns whether some interaction was done.
     /// </summary>
     /// <param name="target"></param>
-    public virtual bool Use(GrabItem target)
+    public virtual bool Use(Item target)
     {
-        if (target != null && target.interactable_item_tags.Contains(this.tag))
+        if (target != null && target.CanBeUsedOnBy(this.tag))
         {
             return true;
         }
@@ -278,6 +264,5 @@ public class GrabItem : MonoBehaviour
     public bool IsGrabbed() { return grabbed; }
     public bool IsInPlace() { return !grabbed && !dropping; }
     public bool IsDropping() { return dropping; }
-    public bool IsHovered() { return hovered; }
 
 }

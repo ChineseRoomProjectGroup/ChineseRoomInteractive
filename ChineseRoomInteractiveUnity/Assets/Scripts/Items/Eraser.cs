@@ -15,7 +15,7 @@ public class Eraser : GrabItem
         base.Start();
     }
 
-    public override bool Use(GrabItem target)
+    public override bool Use(Item target)
     {
         if (!base.Use(target)) return false;
 

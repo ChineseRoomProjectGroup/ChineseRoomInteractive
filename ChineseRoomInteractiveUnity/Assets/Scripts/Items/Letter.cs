@@ -40,6 +40,11 @@ public class Letter : Paper
         };
     }
 
+    public override void Grab()
+    {
+        SetOpened(false);
+        base.Grab();
+    }
     protected override void OnSnapLocationChosen(SnapLocation loc)
     {
         base.OnSnapLocationChosen(loc);
