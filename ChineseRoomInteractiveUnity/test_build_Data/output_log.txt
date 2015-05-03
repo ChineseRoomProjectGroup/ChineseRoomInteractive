@@ -12,10 +12,16 @@ Platform assembly: C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Int
 Loading C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
 Platform assembly: C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\UnityEngine.UI.dll (this message is harmless)
 Loading C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-- Completed reload, in  0.069 seconds
+- Completed reload, in  0.054 seconds
 desktop: 1920x1080 59Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
 Platform assembly: C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\System.dll (this message is harmless)
+KeyNotFoundException: The given key was not present in the dictionary.
+  at System.Collections.Generic.Dictionary`2[System.String,System.String].get_Item (System.String key) [0x00000] in <filename unknown>:0 
+  at Item.OnTriggerEnter2D (UnityEngine.Collider2D collider) [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+

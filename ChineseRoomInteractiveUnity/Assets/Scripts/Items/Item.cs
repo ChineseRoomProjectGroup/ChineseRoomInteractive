@@ -74,7 +74,7 @@ public class Item : MonoBehaviour
     /// </summary>
     /// <param name="use_item_tag"></param>
     /// <returns></returns>
-    public bool CanBeUsedOnBy(string use_item_tag)
+    public virtual bool CanBeUsedOnBy(string use_item_tag)
     {
         return interactable_item_tags.Contains(use_item_tag);
     }

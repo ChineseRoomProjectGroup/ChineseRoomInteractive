@@ -7,7 +7,7 @@ using System;
 
 public class Paper : GrabItem
 {
-    protected bool writable = true;
+    public bool never_write = true; // whether can ever be writable
     public Canvas text_canvas_obj;
     public Text text_obj;
 
@@ -29,7 +29,7 @@ public class Paper : GrabItem
     
     public void AddText(string text)
     {
-        if (!writable) return;
+        if (!Writable()) return;
 
         text_obj.text += text;
 
@@ -37,11 +37,10 @@ public class Paper : GrabItem
     }
     public void RemoveLastChar()
     {
-        if (!writable) return;
+        if (!Writable()) return;
 
         text_obj.text = text_obj.text.Substring(0, text_obj.text.Length - 1);
     }
-
 
     protected override bool SetGraphicsObject(Transform new_graphics_obj)
     {
@@ -51,4 +50,25 @@ public class Paper : GrabItem
         text_canvas_obj.transform.SetParent(new_graphics_obj, false);
         return true;
     }
+    /// <summary>
+    /// Returns whether the paper's text can currently be modified
+    /// </summary>
+    /// <returns></returns>
+    protected virtual bool Writable()
+    {
+        return !never_write;
+    }
+
+
+    public string GetText()
+    {
+        return text_obj.text;
+    }
+    public override bool CanBeUsedOnBy(string use_item_tag)
+    {
+        // cannot use anything on this paper if it is not writable
+        return base.CanBeUsedOnBy(use_item_tag) && Writable();
+    }
+
+    
 }

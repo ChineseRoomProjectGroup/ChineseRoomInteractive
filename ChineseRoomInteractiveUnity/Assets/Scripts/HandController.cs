@@ -56,6 +56,12 @@ public class HandController : MonoBehaviour
     {
         allow_item_use = allow;
     }
+    public void DropHeldItem()
+    {
+        if (!held_item.Drop()) return;
+        held_item = null;
+        holding_item = false;
+    }
 
 
     // PRIVATE MODIFIERS
@@ -110,16 +116,6 @@ public class HandController : MonoBehaviour
         // Graphics
 
         // change the sprite to hand_up
-    }
-    private void DropHeldItem()
-    {
-        if (!held_item.Drop()) return;
-        held_item = null;
-        holding_item = false;
-
-        // Graphics
-
-        // change the sprite to hand_down
     }
 
 

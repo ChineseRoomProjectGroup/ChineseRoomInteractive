@@ -20,14 +20,12 @@ public class Letter : Paper
 
     // state
     private bool opened = false; // opened = not in envelope
-
+    private bool in_outbox = false;
 
 
     new public void Start()
     {
         base.Start();
-
-        base.writable = opened;
 
         interactable_item_tags = new List<string>() { "Pencil", "Eraser" };
 
@@ -38,6 +36,28 @@ public class Letter : Paper
             {"Pencil", "Write Chinese"},
             {"Eraser", "Erase"}
         };
+    }
+
+    public override bool Use(Item target)
+    {
+        if (!base.Use(target)) return false;
+
+        // Send letter
+        Outbox outbox = target.GetComponent<Outbox>();
+        if (outbox != null)
+        {
+            if (outbox.TrySendOutput(this))
+            {
+                // hide the letter
+                in_outbox = true;
+                gameObject.SetActive(false);
+                hand.DropHeldItem();
+
+                return true;
+            } 
+        }
+
+        return false;
     }
 
     public override void Grab()
@@ -78,8 +98,11 @@ public class Letter : Paper
         this.opened = opened;
         collider_opened.enabled = opened;
         collider_envelope.enabled = !opened;
-
-        base.writable = opened;
     }
 
+    protected override bool Writable()
+    {
+        // can modify text when open
+        return base.Writable() && opened;
+    }
 }
