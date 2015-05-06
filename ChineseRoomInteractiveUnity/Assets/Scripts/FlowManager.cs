@@ -31,7 +31,6 @@ public class FlowManager : MonoBehaviour
 
 
     private DemoStage stage = DemoStage.Original;
-    private int stage_state = 0; // state in the current stage
     private bool output_correct = false;
 
     public Animator scene_animator;
@@ -75,9 +74,6 @@ public class FlowManager : MonoBehaviour
     public static void LoadStage(DemoStage stage)
     {
         Instance.stage = stage;
-        Instance.stage_state = 0;
-
-        Instance.StopAllCoroutines();
 
         switch (stage)
         {
