@@ -5,6 +5,15 @@ using System.Collections.Generic;
 
 public class Item : MonoBehaviour 
 {
+    /// Graphics
+
+    // Graphics objects for different states
+    // normal - held or in world
+    // hover - hovered by free hand, hovered by hand with item useable on this item
+    public Transform graphics_normal, graphics_hover;
+    protected Transform current_graphics_obj;
+
+
     /// Interaction and Tooltips
 
     // the tags of items that can interact with this item
@@ -34,7 +43,10 @@ public class Item : MonoBehaviour
     }
     public void Start()
     {
-
+        // update graphics
+        ChangeGraphicsByState();
+        if (current_graphics_obj == null)
+            Debug.Log("First used graphics object is not assigned");
     }
     public void OnTriggerEnter2D(Collider2D collider)
     {
@@ -48,12 +60,14 @@ public class Item : MonoBehaviour
                 // if the held item can interact with this item
                 if (CanBeUsedOnBy(hand.GetHeldItem().tag) && hand.ItemUseAllowed())
                 {
-                    
                     // display the interaction tooltip
-                    hand.SetActionToolTip(interactable_item_tooltips[hand.GetHeldItem().name]);
+                    hand.SetActionToolTip(interactable_item_tooltips[hand.GetHeldItem().tag]);
                 }
             }
         }
+
+        // update graphics
+        ChangeGraphicsByState();
     }
     public void OnTriggerExit2D(Collider2D collider)
     {
@@ -61,8 +75,37 @@ public class Item : MonoBehaviour
         if (collider.transform == hand.transform)
         {
             hovered = false;
+
+            // update graphics and tooltip
+            ChangeGraphicsByState();
             hand.SetActionToolTip("");
         }
+    }
+
+
+    // PRIVATE MODIFIERS
+
+    protected virtual void ChangeGraphicsByState()
+    {
+        if (hovered) SetGraphicsObject(graphics_hover);
+        else SetGraphicsObject(graphics_normal);
+    }
+    /// <summary>
+    /// Returns whether graphics object was set (won't be if objects are null)
+    /// </summary>
+    /// <param name="new_graphics_obj"></param>
+    /// <returns></returns>
+    protected virtual bool SetGraphicsObject(Transform new_graphics_obj)
+    {
+        if (new_graphics_obj == null) return false;
+
+        if (current_graphics_obj != null)
+            current_graphics_obj.gameObject.SetActive(false);
+
+        current_graphics_obj = new_graphics_obj;
+        current_graphics_obj.gameObject.SetActive(true);
+
+        return true;
     }
 
 

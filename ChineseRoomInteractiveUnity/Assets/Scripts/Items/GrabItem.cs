@@ -5,12 +5,6 @@ using System.Collections.Generic;
 public class GrabItem : Item 
 {
     /// Graphics
-    
-    // Graphics objects for different states
-    // normal - held or in world
-    // hover - hovered by free hand, hovered by hand with item useable on this item
-    public Transform graphics_normal, graphics_hover;
-    protected Transform current_graphics_obj;
 
     private string GrabbedSortingLayer = "Hand UI";
     private string NormalSortingLayer = "Foreground";
@@ -44,11 +38,7 @@ public class GrabItem : Item
 
     new public void Start()
     {
-        // update graphics
-        ChangeGraphicsByState();
-        if (current_graphics_obj == null)
-            Debug.Log("First used graphics object is not assigned");
-
+        base.Start();
 
         // hide snap objects
         ShowSnapLocations(false);
@@ -231,29 +221,6 @@ public class GrabItem : Item
             snap_loc.SetActive(show);
         }
     }
-    protected virtual void ChangeGraphicsByState()
-    {
-        if (hovered) SetGraphicsObject(graphics_hover);
-        else SetGraphicsObject(graphics_normal);
-    }
-    /// <summary>
-    /// Returns whether graphics object was set (won't be if objects are null)
-    /// </summary>
-    /// <param name="new_graphics_obj"></param>
-    /// <returns></returns>
-    protected virtual bool SetGraphicsObject(Transform new_graphics_obj)
-    {
-        if (new_graphics_obj == null) return false;
-
-        if (current_graphics_obj != null)
-            current_graphics_obj.gameObject.SetActive(false);
-
-        current_graphics_obj = new_graphics_obj;
-        current_graphics_obj.gameObject.SetActive(true);
-
-        return true;
-    }
-
     protected virtual void OnSnapLocationChosen(SnapLocation loc) { }
 
 
