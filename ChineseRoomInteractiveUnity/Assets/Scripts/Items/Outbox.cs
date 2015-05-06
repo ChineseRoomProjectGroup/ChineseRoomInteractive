@@ -33,7 +33,7 @@ public class Outbox : Item
         if (letter.GetText() == correct_output)
         {
             // message
-            messangar.Message("OK! Let's send along your thoughtful reply.", 2f);
+            messangar.Message("OK! Let's send along your thoughtful reply.", 2f, true);
 
             // next phase
             FlowManager.OnCorrectOutputGiven();
@@ -43,7 +43,7 @@ public class Outbox : Item
 
         // provide helpful message
         messangar.Message("That doesn't sound like a good reply in Chinese..." +
-            " we wouldn't want to send that in a letter! Have another look in the rule books.", 6f);
+            " we wouldn't want to send that in a letter! Have another look in the rule books.", 6f, true);
 
         return false;
     }  

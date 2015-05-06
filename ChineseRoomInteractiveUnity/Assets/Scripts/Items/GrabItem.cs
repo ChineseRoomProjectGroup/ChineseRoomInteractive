@@ -42,7 +42,7 @@ public class GrabItem : Item
 
     // PUBLIC MODIFIERS
 
-    public void Start()
+    new public void Start()
     {
         // update graphics
         ChangeGraphicsByState();

@@ -31,19 +31,57 @@ public class FlowManager : MonoBehaviour
 
 
     private DemoStage stage = DemoStage.Original;
-    public Animator scene_animator;
+    private int stage_state = 0; // state in the current stage
+    private bool output_correct = false;
 
+    public Animator scene_animator;
+    public Messenger native_messenger; // messenger for the native speaker dialog
+    public Messenger room_messenger; // messenger for help and explanation dialog
 
 
     // PUBLIC MODIFIERS
 
+    public void Awake()
+    {
+        // if this is the first instance, make this the singleton
+        if (_instance == null)
+        {
+            _instance = this;
+            DontDestroyOnLoad(_instance);
+        }
+        else
+        {
+            // destroy other instances that are not the already existing singleton
+            if (this != _instance)
+            {
+                // but save their inspector set parameters
+                _instance.scene_animator = this.scene_animator;
+                _instance.native_messenger = this.native_messenger;
+                _instance.room_messenger = this.room_messenger;
+
+                // destroy
+                Destroy(this.gameObject);
+            }
+        }
+
+        Initialize();
+    }
+    public void Start()
+    {
+        // TESTING 
+        LoadStage(DemoStage.Original);
+    }
 
     public static void LoadStage(DemoStage stage)
     {
         Instance.stage = stage;
+        Instance.stage_state = 0;
+
+        Instance.StopAllCoroutines();
+
         switch (stage)
         {
-            case DemoStage.Original: Application.LoadLevel(0); break;
+            case DemoStage.Original: Application.LoadLevel("stage_original"); break;
             case DemoStage.Digitized: Application.LoadLevel(0); break;
             case DemoStage.FileCabinet: Application.LoadLevel(0); break;
             case DemoStage.ScrapPaper: Application.LoadLevel(0); break;
@@ -56,7 +94,8 @@ public class FlowManager : MonoBehaviour
     /// </summary>
     public static void OnCorrectOutputGiven()
     {
-        Instance.StartCoroutine("DelayBeforeNextAnimation");
+        Instance.output_correct = true;
+        //Instance.StartCoroutine("DelayBeforeNextAnimation");
     }
 
 
@@ -67,9 +106,15 @@ public class FlowManager : MonoBehaviour
 
     }
 
-    private IEnumerator DelayBeforeNextAnimation()
+
+    // PUBLIC ACCESSORS
+
+    public static bool Continue()
     {
-        yield return new WaitForSeconds(3);
-        Instance.scene_animator.SetTrigger("Next");
+        return Input.GetKeyDown(KeyCode.Space);
+    }
+    public static bool OutputCorrect()
+    {
+        return Instance.output_correct;
     }
 }
