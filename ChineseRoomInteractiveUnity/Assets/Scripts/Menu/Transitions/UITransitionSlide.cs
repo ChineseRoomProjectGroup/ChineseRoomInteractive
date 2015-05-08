@@ -7,6 +7,7 @@ public class UITransitionSlide : UITransition
     private RectTransform rect;
     public Vector2 in_offset, out_offset;
     private Vector2 initial_pos;
+    public float power = 4;
 
     public void Awake()
     {
@@ -15,7 +16,7 @@ public class UITransitionSlide : UITransition
     }
     public override void UpdateTransition(float transition, bool going_in)
     {
-        float t = 1 - Mathf.Pow(1 - transition, 4);
+        float t = 1 - Mathf.Pow(1 - transition, power);
 
         Vector2 pos = initial_pos;
         pos += (going_in ? in_offset : out_offset) * (1-t);
