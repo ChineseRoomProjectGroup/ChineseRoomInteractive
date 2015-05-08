@@ -22,6 +22,9 @@ public class StageOriNativeTalk2 : StateMachineBehaviour
     {
         FlowManager.Instance.native_messenger.Clear();
 
+        // next page
+        FlowManager.Instance.outro_page.TransitionIn(1);
+
         // reset
         said_message = false;
     }

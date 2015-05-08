@@ -13,7 +13,7 @@ public class RoomButtonsPage : UIMenuPage
     }
     public void OpenHelpPageDelayed(float delay)
     {
-        if (help_page != null) help_page.TransitionIn(default_seconds, delay);
+        if (help_page != null) help_page.TransitionIn(delay);
     }
     public void ButtonHelp()
     {

@@ -37,6 +37,7 @@ public class FlowManager : MonoBehaviour
     public Messenger native_messenger; // messenger for the native speaker dialog
     public Messenger room_messenger; // messenger for help and explanation dialog
     public RoomButtonsPage room_buttons_page;
+    public UIMenuPage outro_page;
 
 
     // PUBLIC MODIFIERS
@@ -59,6 +60,7 @@ public class FlowManager : MonoBehaviour
                 _instance.native_messenger = this.native_messenger;
                 _instance.room_messenger = this.room_messenger;
                 _instance.room_buttons_page = this.room_buttons_page;
+                _instance.outro_page = this.outro_page;
 
                 // destroy
                 Destroy(this.gameObject);

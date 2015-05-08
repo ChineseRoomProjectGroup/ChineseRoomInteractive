@@ -59,6 +59,10 @@ public class UIMenuPage : MonoBehaviour
             StartCoroutine("UpdateTransitionIn");
         }
     }
+    public void TransitionIn(float delay_seconds)
+    {
+        TransitionIn(default_seconds, delay_seconds);
+    }
     public void TransitionIn()
     {
         TransitionIn(default_seconds, default_delay_seconds);
@@ -81,6 +85,10 @@ public class UIMenuPage : MonoBehaviour
             going_out = true;
             StartCoroutine("UpdateTransitionOut");
         }
+    }
+    public void TransitionOut(float delay_seconds)
+    {
+        TransitionOut(default_seconds, delay_seconds);
     }
     public void TransitionOut()
     {
