@@ -18,6 +18,6 @@ public class ContinuePage : UIMenuPage
     {
         TransitionOut();
         on_transitioned_out = () => FlowManager.AnimatorNextScene();
-        if (next_page != null) next_page.TransitionIn(default_seconds, next_page_in_delay);
+        if (next_page != null) next_page.TransitionIn(next_page.default_seconds, next_page_in_delay);
     }
 }

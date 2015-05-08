@@ -10,7 +10,7 @@ public class StageOriNativeTalk2 : StateMachineBehaviour
     {
         if (stateInfo.normalizedTime >= 0.9f && !said_message)
         {
-            FlowManager.Instance.native_messenger.Message("I totally understand this reply!");
+            FlowManager.Instance.native_messenger.Message("Translation from Chinese: \n \"I totally understand this reply!\"");
             said_message = true;
         }
         if (FlowManager.InputContinue())
@@ -23,7 +23,7 @@ public class StageOriNativeTalk2 : StateMachineBehaviour
         FlowManager.Instance.native_messenger.Clear();
 
         // next page
-        FlowManager.Instance.outro_page.TransitionIn(1);
+        FlowManager.Instance.outro_page.TransitionIn(0.5f);
 
         // reset
         said_message = false;
