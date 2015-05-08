@@ -15,16 +15,21 @@ public class HandController : MonoBehaviour
     // whether dropping / using the held item is allowed
     private bool allow_item_use = true;
 
+    // whether the real cursor should show, or the hand should have control
+    private bool has_control = false;
+
 
     // PUBLIC MODIFIERS
 
     public void Start()
     {
-        Cursor.visible = false; // hide default OS cursor
+        SetHasControl(true);
         SetActionToolTip("");
     }
 	public void Update()
     {
+        if (!has_control) return;
+
         //-----hand following mouse-------------------------------------
         Vector2 mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         transform.position = mouse_pos - (Vector2)tip_position.localPosition;
@@ -46,6 +51,17 @@ public class HandController : MonoBehaviour
         Item item = collider.GetComponent<Item>();
         if (item == hovered_item && item != held_item)
             hovered_item = null;
+    }
+
+    public void SetHasControl(bool has_control)
+    {
+        this.has_control = has_control;
+
+        // hide cursor when no control
+        Cursor.visible = !has_control;
+
+        // deactive object when no control
+        gameObject.SetActive(has_control);
     }
 
     public void SetActionToolTip(string text)
@@ -148,5 +164,9 @@ public class HandController : MonoBehaviour
     public bool HoldingItem()
     {
         return holding_item;
+    }
+    public bool HasControl()
+    {
+        return has_control;
     }
 }

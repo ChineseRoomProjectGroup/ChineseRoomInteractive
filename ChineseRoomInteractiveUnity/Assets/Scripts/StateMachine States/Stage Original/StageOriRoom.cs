@@ -3,8 +3,6 @@ using System.Collections;
 
 public class StageOriRoom : StateMachineBehaviour 
 {
-    
-
     private bool said_message = false;
     private float next_timer = -1, next_time_max = 1;
 
