@@ -13,9 +13,9 @@ public class StageOriNativeTalk2 : StateMachineBehaviour
             FlowManager.Instance.native_messenger.Message("I totally understand this reply!");
             said_message = true;
         }
-        if (FlowManager.Continue())
+        if (FlowManager.InputContinue())
         {
-            animator.SetTrigger("Next");
+            FlowManager.AnimatorNextScene();
         }
     }
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

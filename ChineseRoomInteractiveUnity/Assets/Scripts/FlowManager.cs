@@ -36,6 +36,7 @@ public class FlowManager : MonoBehaviour
     public Animator scene_animator;
     public Messenger native_messenger; // messenger for the native speaker dialog
     public Messenger room_messenger; // messenger for help and explanation dialog
+    public RoomButtonsPage room_buttons_page;
 
 
     // PUBLIC MODIFIERS
@@ -57,6 +58,7 @@ public class FlowManager : MonoBehaviour
                 _instance.scene_animator = this.scene_animator;
                 _instance.native_messenger = this.native_messenger;
                 _instance.room_messenger = this.room_messenger;
+                _instance.room_buttons_page = this.room_buttons_page;
 
                 // destroy
                 Destroy(this.gameObject);
@@ -93,6 +95,10 @@ public class FlowManager : MonoBehaviour
         Instance.output_correct = true;
         //Instance.StartCoroutine("DelayBeforeNextAnimation");
     }
+    public static void AnimatorNextScene()
+    {
+        Instance.scene_animator.SetTrigger("Next");
+    }
 
 
     // PRIVATE MODIFIERS
@@ -105,7 +111,7 @@ public class FlowManager : MonoBehaviour
 
     // PUBLIC ACCESSORS
 
-    public static bool Continue()
+    public static bool InputContinue()
     {
         return Input.GetKeyDown(KeyCode.Space);
     }

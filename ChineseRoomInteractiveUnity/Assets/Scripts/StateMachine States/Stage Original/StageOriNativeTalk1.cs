@@ -13,10 +13,6 @@ public class StageOriNativeTalk1 : StateMachineBehaviour
             FlowManager.Instance.native_messenger.Message("I'm going to write a letter to my penpal");
             said_message = true;
         }
-        if (FlowManager.Continue())
-        {
-            animator.SetTrigger("Next");
-        }
     }
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
