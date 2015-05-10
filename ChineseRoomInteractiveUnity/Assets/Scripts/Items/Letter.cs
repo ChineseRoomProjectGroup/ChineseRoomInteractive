@@ -19,6 +19,7 @@ public class Letter : Paper
     public Transform graphics_opened, graphics_opened_hover;
 
     // state
+    public bool start_open = false;
     private bool opened = false; // opened = not in envelope
     private bool in_outbox = false;
 
@@ -26,6 +27,8 @@ public class Letter : Paper
     new public void Start()
     {
         base.Start();
+
+        if (start_open) SetOpened(true);
 
         interactable_item_tags = new List<string>() { "Pencil", "Eraser" };
 
