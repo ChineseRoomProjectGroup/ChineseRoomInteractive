@@ -12,7 +12,7 @@ Platform assembly: C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Int
 Loading C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
 Platform assembly: C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\UnityEngine.UI.dll (this message is harmless)
 Loading C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-- Completed reload, in  0.049 seconds
+- Completed reload, in  0.077 seconds
 desktop: 1920x1080 59Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
@@ -20,28 +20,8 @@ desktop: 1920x1080 59Hz; virtual: 1920x1080 at 0,0
 Platform assembly: C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\System.dll (this message is harmless)
 Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 2.456101 ms
+UnloadTime: 2.967140 ms
 
-Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 626.
-Total: 0.345765 ms (FindLiveObjects: 0.037160 ms CreateObjectMapping: 0.020172 ms MarkObjects: 0.283124 ms  DeleteObjects: 0.004954 ms)
-
-ArgumentOutOfRangeException: Cannot be negative.
-Parameter name: length
-  at System.String.Substring (Int32 startIndex, Int32 length) [0x00000] in <filename unknown>:0 
-  at Paper.RemoveLastChar () [0x00000] in <filename unknown>:0 
-  at Eraser.Use (.Item target) [0x00000] in <filename unknown>:0 
-  at HandController.UpdateItemUsage () [0x00000] in <filename unknown>:0 
-  at HandController.Update () [0x00000] in <filename unknown>:0 
- 
-(Filename:  Line: -1)
-
-ArgumentOutOfRangeException: Cannot be negative.
-Parameter name: length
-  at System.String.Substring (Int32 startIndex, Int32 length) [0x00000] in <filename unknown>:0 
-  at Paper.RemoveLastChar () [0x00000] in <filename unknown>:0 
-  at Eraser.Use (.Item target) [0x00000] in <filename unknown>:0 
-  at HandController.UpdateItemUsage () [0x00000] in <filename unknown>:0 
-  at HandController.Update () [0x00000] in <filename unknown>:0 
- 
-(Filename:  Line: -1)
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 700.
+Total: 0.494051 ms (FindLiveObjects: 0.073612 ms CreateObjectMapping: 0.027604 ms MarkObjects: 0.386464 ms  DeleteObjects: 0.005662 ms)
 
