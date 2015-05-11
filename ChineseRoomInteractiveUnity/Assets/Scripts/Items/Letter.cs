@@ -29,6 +29,7 @@ public class Letter : Paper
         base.Start();
 
         if (start_open) SetOpened(true);
+        ChangeGraphicsByState();
 
         interactable_item_tags = new List<string>() { "Pencil", "Eraser" };
 
