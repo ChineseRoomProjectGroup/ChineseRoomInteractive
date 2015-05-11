@@ -42,7 +42,7 @@ public class Outbox : Item
 
 
         // provide helpful message
-        messangar.Message("We wouldn't want to send that in a letter! Have another look in the rule books.", 6f, true);
+        messangar.Message("ಠ_ಠ We wouldn't want to send that in a letter! Have another look in the rule books.", 6f, true);
 
         return false;
     }  
