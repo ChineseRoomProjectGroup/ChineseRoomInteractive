@@ -12,7 +12,7 @@ Platform assembly: C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Int
 Loading C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
 Platform assembly: C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\UnityEngine.UI.dll (this message is harmless)
 Loading C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-- Completed reload, in  0.077 seconds
+- Completed reload, in  0.056 seconds
 desktop: 1920x1080 59Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
@@ -20,8 +20,8 @@ desktop: 1920x1080 59Hz; virtual: 1920x1080 at 0,0
 Platform assembly: C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\test_build_Data\Managed\System.dll (this message is harmless)
 Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 2.967140 ms
+UnloadTime: 3.451282 ms
 
-Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 700.
-Total: 0.494051 ms (FindLiveObjects: 0.073612 ms CreateObjectMapping: 0.027604 ms MarkObjects: 0.386464 ms  DeleteObjects: 0.005662 ms)
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 706.
+Total: 0.518117 ms (FindLiveObjects: 0.065826 ms CreateObjectMapping: 0.033267 ms MarkObjects: 0.411591 ms  DeleteObjects: 0.006016 ms)
 
