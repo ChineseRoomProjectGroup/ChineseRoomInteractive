@@ -8,7 +8,7 @@ public class StageOriNativeTalk1 : StateMachineBehaviour
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (stateInfo.normalizedTime >= 0.9f && !said_message)
+        if (stateInfo.normalizedTime >= 0.99f && !said_message)
         {
             FlowManager.Instance.native_messenger.Message("Translation from Chinese: \n \"I'm going to write a letter to my penpal\"");
             said_message = true;
