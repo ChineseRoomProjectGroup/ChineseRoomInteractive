@@ -218,7 +218,10 @@ public class GrabItem : Item
     {
         foreach (SnapLocation snap_loc in snap_locations)
         {
-            snap_loc.SetActive(show);
+            if (show && !snap_loc.IsOccupied())
+                snap_loc.SetActive(true);
+            else if (!show)
+                snap_loc.SetActive(false);
         }
     }
     protected virtual void OnSnapLocationChosen(SnapLocation loc) { }
