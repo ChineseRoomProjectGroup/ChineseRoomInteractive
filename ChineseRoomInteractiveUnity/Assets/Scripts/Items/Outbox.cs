@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class Outbox : Item
 {
-    public string correct_output = "ABC";
+    public string correct_output;
     public Messenger messangar;
 
 
