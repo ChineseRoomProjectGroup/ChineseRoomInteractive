@@ -10,7 +10,7 @@ public class StageOriNativeTalk1 : StateMachineBehaviour
     {
         if (stateInfo.normalizedTime >= 0.9f && !said_message)
         {
-            FlowManager.Instance.native_messenger.Message("Translation from Chinese: \n \"I'm going to write a letter to my penpal\"");
+            FlowManager.Instance.native_messenger.Message(" \"我要给我的笔友写一封信\" \nTranslation from Chinese: \n \"I'm going to write a letter to my penpal\"");
             said_message = true;
         }
     }
