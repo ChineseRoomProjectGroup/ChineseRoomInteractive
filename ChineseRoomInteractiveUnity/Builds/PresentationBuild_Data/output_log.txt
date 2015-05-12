@@ -1,0 +1,27 @@
+Initialize engine version: 5.0.1f1 (5a2e8fe35a68)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA NVS 5200M (ID=0x1140)
+    Vendor:   NVIDIA
+    VRAM:     971 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\Builds\PresentationBuild_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\Builds\PresentationBuild_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\Builds\PresentationBuild_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\Builds\PresentationBuild_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\Builds\PresentationBuild_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\Builds\PresentationBuild_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+- Completed reload, in  0.155 seconds
+desktop: 1600x900 50Hz; virtual: 1600x900 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+Platform assembly: C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\Builds\PresentationBuild_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\Robert Wild\Keep\Education\RPI\Year 2\Semester 2\Introduction to Cognitive Science\ChineseRoomInteractive\ChineseRoomInteractiveUnity\Builds\PresentationBuild_Data\Managed\System.dll (this message is harmless)
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 7.386007 ms
+
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 736.
+Total: 1.647784 ms (FindLiveObjects: 0.133422 ms CreateObjectMapping: 0.182261 ms MarkObjects: 1.315112 ms  DeleteObjects: 0.015217 ms)
+
