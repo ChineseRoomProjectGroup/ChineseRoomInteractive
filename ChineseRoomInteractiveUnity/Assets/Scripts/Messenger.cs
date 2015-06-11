@@ -16,7 +16,7 @@ public class Messenger : MonoBehaviour
     // visual
     private float fade_time = 0.5f;
     private float seconds_per_char = 0.001f; // for typing transition
-
+    private float transform_time = 0.5f; // transform animation timing
 
     public void Start()
     {
